@@ -54,6 +54,7 @@ So now, we have the following tools:
 - Arbitrary read/write for a huge region of the heap
 - Arbitrary read/write/execute going beyond the heap
 - RWX regions
+
 How do we chain them to make an exploit?
 
 First, because ASLR's enabled, we need to identify where an RWX region is present. Any will do. The part of the heap available to the huge array contains addresses pointing to functions within an RWX region, but it also has addresses pointing to other regions; how do we discriminate? Recall that on Linux, ASLR has 28 bits of entropy (sometimes less!), meaning that although bits of the mask 0x7fffffe00000 in an address will be random, bits 0x0000001fffff will be static. So, with ASLR disabled, let's assume we have the following RWX regions:
@@ -110,6 +111,7 @@ I will admit that I don't know enough about how ZScript's function pointers work
 - At offset 0x8 of this unidentified class/struct is a pointer to a VMFunction.
 - At offset 0xc of the VMFunction is the 32-bit VarFlags member. Setting it to zero makes a shorter path to calling the shellcode.
 - At offset 0x58 of the VMFunction is the actual pointer to the function to be called.
+
 I really should write a diagram for this, but right now I don't feel like doing ASCII art. See the exploit source code to see what the above looks like.
 Once the above is sorted out, we then can modify the function pointer in the gadget object. When we call it, it will execute our shellcode once it's written.
 
