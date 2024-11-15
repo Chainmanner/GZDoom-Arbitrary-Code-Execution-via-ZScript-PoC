@@ -13,6 +13,25 @@ The vulnerability has been disclosed to the devs before this PoC's publication a
 ## Disclaimer
 This PoC is made and released for educational purposes, so that game/scripting engine developers may understand how vulnerabilities can arise and so that players may understand what a malicious game mod can look like. I am not responsible or liable for any misuse of this PoC. Please do not use this to compromise your fellow gamers' PCs; it is illegal (you should not need me to tell you that), and it is especially a dirtbag move to take over somebody's computer through a video game.
 
+## Using the PoC
+To use this PoC, download this repo and create a PK3 file (which is really a zip file with the .pk3 extension) containing `zscript.zs` and `MAPINFO`:
+```
+git clone https://github.com/Chainmanner/GZDoom-Arbitrary-Code-Execution-via-ZScript-PoC
+cd GZDoom-Arbitrary-Code-Execution-via-ZScript-PoC
+zip PoC.pk3 zscript.zs MAPINFO
+```
+The default payload is to run a reverse shell to localhost on port 1337. Start the listener:
+```
+nc -nvlp 1337
+```
+Run the PoC like so:
+```
+gzdoom -iwad <your-doom-or-freedoom-wad> -file PoC.pk3
+```
+If it worked, you should now have a reverse shell to yourself.
+
+This PoC is for Linux only. It might not work on the first try; just try it again until it does.
+
 # Explanation
 *NOTE: This is my first exploit writeup and I'm still working on my skill to do low-level writeups. Also, I did much of my debugging with GDB, and unfortunately I didn't have the good sense to save some memory dumps to illustrate my explanation better. Sorry! My next writeup will be better, I promise.*
 
